@@ -23,25 +23,31 @@ var cards = [ {
 
 
 	
-
+var gamesPlayed = 0;
+var gamesWon = 0;
 
 var cardsInPlay = [];
 
 function checkForMatch() {
-	if (cardsInPlay.length === 2) {
 		if (cardsInPlay[0] === cardsInPlay[1]){
 			alert("You found a match!");
+			gamesWon = gamesWon + 1;
+			document.querySelector('.won').textContent = gamesWon;
 		} else {
 			alert("Sorry, try again.");
 		}
-	}
 }
 
 function flipCard() {
 	var cardID = this.getAttribute('data-id');
 	cardsInPlay.push(cards[cardID].rank);
 	this.setAttribute('src', cards[cardID].cardImage);
-	checkForMatch();
+	if (cardsInPlay.length == 2) {
+		gamesPlayed = gamesPlayed + 1;
+		document.querySelector('.played').textContent = gamesPlayed;
+		checkForMatch();
+	}
+	
 }
 
 function createBoard() {
@@ -55,6 +61,19 @@ function createBoard() {
 }
 
 createBoard();
+
+function resetBoard() {
+	var currentBoard = document.getElementById('game-board');
+	while (currentBoard.hasChildNodes()) {
+		currentBoard.removeChild(currentBoard.firstChild);
+	}
+	createBoard();
+	cardsInPlay = [];
+}
+
+var resetButton = document.querySelector('button');
+resetButton.addEventListener('click', resetBoard);
+
 
 
 
